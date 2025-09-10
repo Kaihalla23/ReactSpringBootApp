@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export const UserForm = ({ handlerAddUser, initialUserForm, userSelected }) => {
+export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handlerCloseForm }) => {
 
     const [userForm, setUserForm] = useState(initialUserForm);
 
@@ -35,6 +35,10 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected }) => {
         handlerAddUser(userForm);
         setUserForm(initialUserForm);
     }
+    const onCloseForm = () => {
+        handlerCloseForm();
+        setUserForm(initialUserForm);
+    }
     return (
         <>
             <form onSubmit={onSubmit}
@@ -61,16 +65,19 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected }) => {
                     value={email}
                     onChange={onInputChange} />
                 <input type="hidden" name="id" value={id} />
-                <button
-                    className="py-2 px-3 w-full text-left"
-                    type="submit">
-                    {id > 0 ? 'Editar' : 'Crear'}
-                </button>
-                <button className="btn btn-primary mx-2"
-                    type="button"
-                    >
-                    Cerrar
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        className="py-2 px-4 text-left bg-green-600 text-white rounded"
+                        type="submit">
+                        {id > 0 ? 'Editar' : 'Crear'}
+                    </button>
+                    <button
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                        type="button"
+                        onClick={onCloseForm}>
+                        Cerrar
+                    </button>
+                </div>
             </form>
         </>
     )
