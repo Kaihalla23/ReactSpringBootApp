@@ -9,8 +9,16 @@ export const usersReducer = (state = [], action) => {
                 }
             ];
         case 'removeUser':
-            return  state.filter(user => user.id !== action.payload);
-            
+            return state.filter(user => user.id !== action.payload);
+        case 'updateUser':
+            return state.map(user => {
+                if (user.id === action.payload.id) {
+                    //... para enviar otro objeto y que sea inmutable
+                    return {...action.payload, password: user.password };
+                }
+                return user;
+            })
+
         default:
             return state;
     }

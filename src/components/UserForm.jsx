@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-export const UserForm = ({handlerAddUser}) => {
+export const UserForm = ({ handlerAddUser, initialUserForm, userSelected }) => {
 
-
-    const initialUserForm = {
-        username: '',
-        password: '',
-        email: '',
-    }
     const [userForm, setUserForm] = useState(initialUserForm);
 
-    const { username, password, email } = userForm;
+    const { id, username, password, email } = userForm;
+
+    useEffect(() => {
+        setUserForm({ ...userSelected, password: '' });
+    },
+        [userSelected]);
 
     const onInputChange = ({ target }) => {
         //        console.log(target.name);
@@ -20,11 +20,16 @@ export const UserForm = ({handlerAddUser}) => {
             [name]: value,
         });
     }
-    const onSubmit = (event) =>{
+    const onSubmit = (event) => {
         event.preventDefault();
-        if(!username || !password || !email){
+        if (!username || (!password && id === 0) || !email) {
             //Dialogo del navegador, sale un popup
-            alert('Please fill in all fields');
+            //alert('Please fill in all fields');
+            Swal.fire({
+                title: 'Error!',
+                text: 'Por favor, completa todos los campos',
+                icon: 'error'
+            });
             return;
         }
         handlerAddUser(userForm);
@@ -41,13 +46,13 @@ export const UserForm = ({handlerAddUser}) => {
                     name="username"
                     value={username}
                     onChange={onInputChange} />
-                <input
+                {id > 0 || <input
                     type="password"
                     className="py-2 px-3 w-full"
                     placeholder="Password"
                     name="password"
                     value={password}
-                    onChange={onInputChange} />
+                    onChange={onInputChange} />}
                 <input
                     type="text"
                     className="py-2 px-3 w-full"
@@ -55,9 +60,17 @@ export const UserForm = ({handlerAddUser}) => {
                     name="email"
                     value={email}
                     onChange={onInputChange} />
+                <input type="hidden" name="id" value={id} />
                 <button
                     className="py-2 px-3 w-full text-left"
-                    type="submit">Crear</button>
+                    type="submit">
+                    {id > 0 ? 'Editar' : 'Crear'}
+                </button>
+                <button className="btn btn-primary mx-2"
+                    type="button"
+                    >
+                    Cerrar
+                </button>
             </form>
         </>
     )
