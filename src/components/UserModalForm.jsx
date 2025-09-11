@@ -1,3 +1,5 @@
+import { UserForm } from "./UserForm"
+
 export const UserModalForm = ({userSelected, initialUserForm, handlerAddUser, handlerCloseForm }) => {
     return (
                     <div className="abrir-modal animacion fadeIn fixed top-0 left-0 w-full items-start h-full z-50 flex justify-center">
