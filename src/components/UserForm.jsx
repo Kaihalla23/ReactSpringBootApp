@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { UserContext } from "../context/UserContext";
 
-export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handlerCloseForm }) => {
+export const UserForm = ({ userSelected, handlerCloseForm }) => {
+    const {handlerAddUser, initialUserForm } = useContext(UserContext);
 
     const [userForm, setUserForm] = useState(initialUserForm);
 
@@ -32,11 +34,20 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handle
             });
             return;
         }
+        if(!email.includes('@')){
+            Swal.fire({
+                title: 'Error!',
+                text: 'Ese no es un email valido'
+            });
+            return;
+        }
         handlerAddUser(userForm);
         setUserForm(initialUserForm);
     }
     const onCloseForm = () => {
-        handlerCloseForm();
+        if (handlerCloseForm) {
+            handlerCloseForm();
+        }
         setUserForm(initialUserForm);
     }
     return (
@@ -71,12 +82,14 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handle
                         type="submit">
                         {id > 0 ? 'Editar' : 'Crear'}
                     </button>
-                    <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                        type="button"
-                        onClick={onCloseForm}>
-                        Cerrar
-                    </button>
+                    {!handlerCloseForm ||
+                        <button
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                            type="button"
+                            onClick={onCloseForm}>
+                            Cerrar
+                        </button>}
+
                 </div>
             </form>
         </>

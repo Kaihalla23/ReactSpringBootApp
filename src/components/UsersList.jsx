@@ -1,6 +1,6 @@
 import { UserRow } from "./UserRow"
 
-export const UsersList = ({ users = [], handlerRemoveUser , handlerUpdateSelectedUser }) => {
+export const UsersList = ({ users = [], handlerRemoveUser, handlerUpdateSelectedUser }) => {
     return (
 
         <table className="w-full text-left min-w-[600px]">
@@ -15,12 +15,14 @@ export const UsersList = ({ users = [], handlerRemoveUser , handlerUpdateSelecte
                     <th scope="col" className="px-2 py-1 uppercase bg-gray-200 min-w-[120px]">
                         update</th>
                     <th scope="col" className="px-2 py-1 uppercase bg-gray-200 min-w-[120px]">
+                        update route</th>
+                    <th scope="col" className="px-2 py-1 uppercase bg-gray-200 min-w-[120px]">
                         remove</th>
                 </tr>
             </thead>
             <tbody className="">
                 {
-                    users.map(({ id, username, email}) => (
+                    users.map(({ id, username, email }) => (
                         <UserRow
                             key={id}
                             id={id}
